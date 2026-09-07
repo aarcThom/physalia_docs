@@ -10,7 +10,10 @@
    Voltage may take on a dark ground. */
 :root {
   --phy-logo-ink: var(--phy-voltage); /* the wordmark and creature dots */
-  --phy-logo-halo: var(--phy-voltage-light); /* the lighter dots behind it */
+  /* Nematocyst behind the mark, the one place on the site it covers real
+     area: the creature is what it names, so here the colour is the meaning.
+     Faint by design — 1.3:1 on the panel reads as a glow, not a second mark. */
+  --phy-logo-halo: var(--phy-nematocyst);
   /* The strapline is type and it crosses the halo bar, so it takes the ink
      rather than the mark: Voltage on Voltage light would be 2.5:1. */
   --phy-logo-text: var(--phy-deep-water); /* 19.8:1 on the panel, 6.7:1 on the halo */
@@ -20,12 +23,13 @@
 }
 
 [data-md-color-scheme="slate"] {
-  /* The tonal pair swaps: raw Voltage is 3.0:1 on Deep water, so the mark
-     steps up to Voltage light and the halo takes the raw hue. Light mode
-     reads dark mark over light halo, dark mode light mark over dark halo —
-     one hue family either way. */
+  /* Both tones step: raw Voltage is 3.0:1 on Deep water, so the mark moves up
+     to Voltage light, and the halo moves down to the darkened Nematocyst.
+     Raw Nematocyst here would be 12.7:1 against the panel — louder than the
+     mark it sits behind — and would leave the strapline at 1.07:1 where the
+     line crosses it. Darkened, that reads 5.8:1. */
   --phy-logo-ink: var(--phy-voltage-light); /* 5.7:1 on the splash panel */
-  --phy-logo-halo: var(--phy-voltage);
+  --phy-logo-halo: var(--phy-nematocyst-dark); /* 2.4:1 — behind the mark, not on top */
   --phy-logo-text: var(--phy-glass); /* the dark-mode ink: 13.7:1, 5.1:1 on the halo */
   --phy-header-fg: var(--phy-glass);
   --phy-header-fg-hover: #ffffff;
