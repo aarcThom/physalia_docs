@@ -1,13 +1,13 @@
 [project]
-site_url = "https://www.example.com/"
-site_name = "Documentation"
-# site_description = "Your project description"
-# site_author = "Your name"
+site_url = "https://aarcthom.github.io/physalia_docs/"
+site_name = "Physalia"
+# site_description = "Documention for Physalia"
+# site_author = "Thomas Gaudin"
 
-# copyright = "Copyright &copy; 2026 Your name"
+# copyright = "Copyright &copy; 2026 Thomas Gaudin"
 
-# repo_url = "https://github.com/user/repo"
-# repo_name = "user/repo"
+# repo_url = "https://github.com/aarcThom/physalia_docs"
+# repo_name = "aarcThom/physalia_docs"
 # edit_uri = "edit/main/docs/"
 
 nav = [
