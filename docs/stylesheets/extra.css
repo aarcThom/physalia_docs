@@ -5,7 +5,7 @@
    rather than carrying their own copy of the value. */
 :root {
   --phy-ink: #1700d4; /* header bar, and the logo dots */
-  --phy-sky: #aee8ff; /* splash panel, and the docs background in light mode */
+  --phy-sky: #d7fffe; /* splash panel, and the docs background in light mode */
 }
 
 /* The docs share the splash's background in light mode. The scheme attribute
