@@ -1,0 +1,34 @@
+/* Component reference -------------------------------------------------- */
+
+/* Grasshopper icons are 24x24. Displayed at exactly 2x with nearest-neighbour
+   scaling so they stay crisp instead of going soft under interpolation. */
+.phy-icon {
+  width: 48px;
+  height: 48px;
+  float: left;
+  margin: 0.1rem 0.9rem 0.4rem 0;
+  image-rendering: pixelated;
+}
+
+/* Each component entry ends with one of these so the next heading starts
+   below the floated icon rather than beside it. */
+.phy-clear {
+  clear: both;
+}
+
+/* Component names sit close together; give them a little more air and a rule
+   so the reference scans as a list rather than a wall. */
+.md-typeset h3 {
+  margin-top: 2.2em;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset h3 + p {
+  margin-top: 0.4em;
+}
+
+/* The "icon not yet assigned" note. */
+.md-typeset small {
+  color: var(--md-default-fg-color--light);
+}
