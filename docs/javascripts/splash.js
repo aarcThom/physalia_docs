@@ -29,6 +29,21 @@
   var SCATTER = 0.55; // portion of the scroll each dot takes to leave
   var TEXT_FADE = 0.4; // portion of the scroll over which the text fades out
 
+  /* Stacked layout, for a canvas too narrow to carry the lockup side by side.
+   * The creature goes above the wordmark and the pair is hung near the top of
+   * the stage rather than centred, which is where a phone reader is looking.
+   */
+  var STACK_W = 700; // canvas width, in CSS px, below which the lockup stacks
+  var STACK_FIT = 0.95; // stacked, the box is squarer, so fill more of it
+  var STACK_GAP = 40; // creature-to-wordmark gap, in viewBox units
+  var STACK_TOP = 0.06; // stacked, the artwork starts this far down the stage
+  var CREATURE_X = 232; // dots left of this are the creature, the rest wordmark
+
+  /* The lockup as two pieces: the creature, and the wordmark with its
+     strapline. Side by side they move as one; stacked they do not. */
+  var CREATURE = 0;
+  var WORDMARK = 1;
+
   /* Arimo is metric-compatible with Arial, so the line keeps the width and
      spacing it was set with. Arial itself is preferred when present. */
   var TEXT_STACK = 'Arial, Arimo, Helvetica, sans-serif';
@@ -72,7 +87,9 @@
        longest escape a dot inside the frame can need is one diagonal, so the
        shortest throw is set just above 1.
 
-       `boil` holds this dot's fixed jitter offsets, one per drawing. */
+       `boil` holds this dot's fixed jitter offsets, one per drawing. `g` is
+       the piece of the lockup the dot belongs to, which the stacked layout
+       positions independently. */
     function build(dots) {
       return dots.map(function (d) {
         var ang = rnd() * Math.PI * 2;
@@ -88,6 +105,7 @@
         return {
           x: d[0],
           y: d[1],
+          g: d[0] < CREATURE_X ? CREATURE : WORDMARK,
           dx: dx / len,
           dy: dy / len,
           spread: 1.05 + rnd() * 0.85,
@@ -103,7 +121,36 @@
       { key: "--phy-ink", fallback: logo.primary.fill, parts: build(logo.primary.dots) }
     ];
 
-    var dpr, sw, sh, scale, ox, oy, textFill;
+    /* Where each piece lands, in CSS pixels: dot (x, y) in viewBox units maps
+       to gx[g] + x * scale, gy[g] + y * scale. */
+    var gx = [0, 0];
+    var gy = [0, 0];
+
+    /* Extent of each piece in viewBox units, dot radius included. Fixed by the
+       artwork, so measured once. The strapline is type and is added in resize,
+       once a font is in hand to measure it with. */
+    function dotBox(g) {
+      var b = null;
+      for (var L = 0; L < layers.length; L++) {
+        var parts = layers[L].parts;
+        for (var i = 0; i < parts.length; i++) {
+          var q = parts[i];
+          if (q.g !== g) continue;
+          if (!b) b = [q.x, q.y, q.x, q.y];
+          else {
+            if (q.x < b[0]) b[0] = q.x;
+            if (q.y < b[1]) b[1] = q.y;
+            if (q.x > b[2]) b[2] = q.x;
+            if (q.y > b[3]) b[3] = q.y;
+          }
+        }
+      }
+      return [b[0] - logo.r, b[1] - logo.r, b[2] + logo.r, b[3] + logo.r];
+    }
+
+    var dotBoxes = [dotBox(CREATURE), dotBox(WORDMARK)];
+
+    var dpr, sw, sh, scale, textFill;
 
     function resize() {
       /* Colours come from the custom properties so the header and the artwork
@@ -123,10 +170,43 @@
       canvas.width = Math.round(sw * dpr);
       canvas.height = Math.round(sh * dpr);
 
-      var pad = sw < 700 ? 20 : 64;
-      scale = Math.min((sw - pad * 2) / logo.w, (sh - pad * 2) / logo.h) * FIT;
-      ox = (sw - logo.w * scale) / 2;
-      oy = (sh - logo.h * scale) / 2;
+      var pad = sw < STACK_W ? 20 : 64;
+      var availW = sw - pad * 2;
+      var availH = sh - pad * 2;
+
+      if (sw >= STACK_W) {
+        /* Wide: the lockup as drawn, centred, both pieces on one transform. */
+        scale = Math.min(availW / logo.w, availH / logo.h) * FIT;
+        gx[CREATURE] = gx[WORDMARK] = (sw - logo.w * scale) / 2;
+        gy[CREATURE] = gy[WORDMARK] = (sh - logo.h * scale) / 2;
+        return;
+      }
+
+      /* Narrow: creature over wordmark, each centred on its own, the pair
+         hung near the top of the stage. The strapline can overhang the
+         highlight it sits on, so it is measured rather than assumed. */
+      ctx.font = logo.text.size + "px " + TEXT_STACK;
+      var textW = ctx.measureText(logo.text.s).width;
+
+      var creature = dotBoxes[CREATURE];
+      var word = dotBoxes[WORDMARK];
+      var wordX0 = Math.min(word[0], logo.text.x);
+      var wordX1 = Math.max(word[2], logo.text.x + textW);
+
+      var creatureW = creature[2] - creature[0];
+      var creatureH = creature[3] - creature[1];
+      var wordW = wordX1 - wordX0;
+      var wordH = word[3] - word[1];
+
+      var stackW = Math.max(creatureW, wordW);
+      var stackH = creatureH + STACK_GAP + wordH;
+      scale = Math.min(availW / stackW, availH / stackH) * STACK_FIT;
+
+      var top = sh * STACK_TOP;
+      gx[CREATURE] = (sw - creatureW * scale) / 2 - creature[0] * scale;
+      gy[CREATURE] = top - creature[1] * scale;
+      gx[WORDMARK] = (sw - wordW * scale) / 2 - wordX0 * scale;
+      gy[WORDMARK] = top + (creatureH + STACK_GAP) * scale - word[1] * scale;
     }
 
     /* 0 while the stage is still travelling into place, 1 once the hero has
@@ -162,8 +242,8 @@
 
           var off = diag * q.spread * t * t; // accelerate outward
           var j = q.boil[state];
-          var x = ox + q.x * scale + q.dx * off + j[0];
-          var y = oy + q.y * scale + q.dy * off + j[1];
+          var x = gx[q.g] + q.x * scale + q.dx * off + j[0];
+          var y = gy[q.g] + q.y * scale + q.dy * off + j[1];
 
           /* Dots keep full opacity and full size, so they leave the frame
              intact rather than dissolving and survive to be recalled into the
@@ -185,7 +265,11 @@
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         ctx.font = Math.round(logo.text.size * scale) + "px " + TEXT_STACK;
-        ctx.fillText(logo.text.s, ox + logo.text.x * scale, oy + logo.text.y * scale);
+        ctx.fillText(
+          logo.text.s,
+          gx[WORDMARK] + logo.text.x * scale,
+          gy[WORDMARK] + logo.text.y * scale
+        );
         ctx.globalAlpha = 1;
       }
     }

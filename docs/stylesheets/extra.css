@@ -72,6 +72,17 @@
   overflow: hidden;
 }
 
+/* Below this width the theme hides .md-tabs, so only the 2.4rem header is
+   pinned. Without the correction the stage would start 2.4rem too low and run
+   2.4rem past the bottom of the screen — on a phone, where the lockup also
+   stacks, that pushed the artwork well down the page. */
+@media screen and (max-width: 76.234375em) {
+  .phy-hero__stage {
+    top: 2.4rem;
+    height: calc(100vh - 2.4rem);
+  }
+}
+
 .phy-hero__canvas {
   display: block;
   width: 100%;
