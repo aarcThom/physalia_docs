@@ -241,12 +241,22 @@
     redrawOnce();
     start();
 
-    /* The line is measured in the font it is set in, so redraw once the web
-       font has actually arrived — otherwise the first paint uses a fallback. */
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () {
-        if (alive) redrawOnce();
-      });
+    /* A face used only by canvas is never fetched: ctx.font does not trigger a
+       download the way rendered text does. Ask for it explicitly, then redraw,
+       so the first paint is not left in a fallback on machines without Arial.
+       document.fonts.ready covers anything else still settling. */
+    if (document.fonts && document.fonts.load) {
+      document.fonts
+        .load("400 36px Arimo")
+        .then(function () {
+          return document.fonts.ready;
+        })
+        .then(function () {
+          if (alive) redrawOnce();
+        })
+        .catch(function () {
+          /* No Arimo: the stack falls through to Arial and the local sans. */
+        });
     }
 
     var io = null;
