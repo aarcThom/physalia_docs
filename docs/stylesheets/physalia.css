@@ -32,12 +32,12 @@
   --phy-glass: #d3e5de; /* pale iridescent mint */
   --phy-periwinkle: #8e8ad8; /* lavender-blue */
   --phy-crest: #e25fa4; /* violet-leaning pink */
-  --phy-nematocyst: #e9dd4f; /* chartreuse */
+  --phy-nematocyst: #c6de4a; /* chartreuse */
 
   /* Darkened for use as text on light surfaces. Raw Crest is 3.3:1 on white
-     and raw Nematocyst 1.4:1 — neither is usable as light-mode type. */
+     and raw Nematocyst 1.5:1 — neither is usable as light-mode type. */
   --phy-crest-dark: #b02572; /* 6.3:1 on white, 5.9:1 on the alt surface */
-  --phy-nematocyst-dark: #5f5405; /* 7.6:1 on white, 7.2:1 on the alt surface */
+  --phy-nematocyst-dark: #4f5b11; /* 7.4:1 on white, 7.0:1 on the alt surface */
   --phy-voltage-dark: #14399b; /* 10.1:1 on white — code keywords */
   --phy-periwinkle-dark: #6b66c4; /* 4.9:1 on white, 4.6:1 on the alt surface */
 
@@ -116,7 +116,7 @@
   --md-typeset-table-color--light: var(--phy-surface-alt);
 
   /* -- Marked text: the one place raw Nematocyst carries meaning --------- */
-  --md-typeset-mark-color: #e9dd4f66; /* 40% */
+  --md-typeset-mark-color: #c6de4a66; /* 40% */
 
   /* -- Keyboard keys ----------------------------------------------------- */
   --md-typeset-kbd-color: var(--phy-surface-alt);
@@ -125,7 +125,7 @@
 
   /* -- Warning banner: Deep water on the Nematocyst tint, never white ---- */
   --md-warning-fg-color: var(--phy-deep-water);
-  --md-warning-bg-color: #f7f3c1; /* Nematocyst at ~35% over white */
+  --md-warning-bg-color: #ebf3c0; /* Nematocyst at ~35% over white */
 
   /* -- No gradients, glows or drop shadows: every elevation is a hairline.
         z1 input, z2 secondary sidebar / select / tooltip, z3 dialog and the
@@ -215,7 +215,7 @@
   --md-typeset-table-color--light: var(--phy-raised);
 
   /* -- Marked text ------------------------------------------------------- */
-  --md-typeset-mark-color: #e9dd4f40; /* 25% */
+  --md-typeset-mark-color: #c6de4a40; /* 25% */
 
   /* -- Keyboard keys ----------------------------------------------------- */
   --md-typeset-kbd-color: var(--phy-border-dark);
@@ -225,7 +225,7 @@
   /* -- Warning banner: the same pair as light mode, so the one Nematocyst
         surface on the site reads identically and never carries white type. */
   --md-warning-fg-color: var(--phy-deep-water);
-  --md-warning-bg-color: #f7f3c1;
+  --md-warning-bg-color: #ebf3c0;
 
   /* -- Elevation as hairlines, and the footer surface -------------------- */
   --md-shadow-z1: 0 0 0 0.05rem var(--phy-border-dark);
@@ -263,7 +263,7 @@
 [data-md-color-scheme="default"] {
   --phy-adm-info-ink: var(--phy-voltage);
   --phy-adm-tip-ink: var(--phy-periwinkle-dark);
-  --phy-adm-warning-ink: var(--phy-nematocyst-dark); /* raw is 1.4:1 here */
+  --phy-adm-warning-ink: var(--phy-nematocyst-dark); /* raw is 1.5:1 here */
 }
 
 [data-md-color-scheme="slate"] {
