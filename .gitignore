@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Agent tooling
+# ---------------------------------------------------------------------------
+# Nothing from Claude or Serena is tracked in this repo, memories included.
+# Note: the main Physalia repo does the opposite and deliberately tracks
+# .claude/memory/ to sync agent memory across machines. This repo does not.
+.claude/
+.serena/
+CLAUDE.local.md
+
+# If you later want to share project-level Claude settings with contributors,
+# flip these two lines on (order matters, they must follow .claude/ above):
+# !.claude/
+# .claude/*
+# !.claude/settings.json
+
+# ---------------------------------------------------------------------------
+# Zensical
+# ---------------------------------------------------------------------------
+site/
+.cache/
+
+# ---------------------------------------------------------------------------
+# uv / Python
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Tool caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# Secrets and local env
+.env
+.env.*
+!.env.example
+
+# Deliberately NOT ignored (these are the reproducibility pins, commit them):
+#   uv.lock
+#   .python-version
+#   pyproject.toml
+#   zensical.toml
+
+# ---------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------
+.vscode/
+.idea/
+.vs/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
