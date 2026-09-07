@@ -61,9 +61,17 @@
       };
     });
 
-    var dpr, sw, sh, scale, ox, oy;
+    var dpr, sw, sh, scale, ox, oy, ink;
 
     function resize() {
+      /* The dot colour comes from the --phy-ink custom property so the header
+         and the dots stay in step from one place. logo.fill, baked in from the
+         source SVG, is the fallback if the property is ever missing. */
+      ink =
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--phy-ink")
+          .trim() || logo.fill;
+
       var rect = canvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       sw = rect.width;
@@ -92,7 +100,7 @@
     function draw(p) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, sw, sh);
-      ctx.fillStyle = logo.fill;
+      ctx.fillStyle = ink;
 
       var r0 = logo.r * scale;
       var diag = Math.sqrt(sw * sw + sh * sh);

@@ -1,3 +1,20 @@
+/* Brand constants ------------------------------------------------------- */
+
+/* The three colours the site is built from. Change them here and everything
+   follows — including the logo dots, which splash.js reads from --phy-ink
+   rather than carrying their own copy of the value. */
+:root {
+  --phy-ink: #1700d4; /* header bar, and the logo dots */
+  --phy-sky: #aee8ff; /* splash panel, and the docs background in light mode */
+}
+
+/* The docs share the splash's background in light mode. The scheme attribute
+   sits on <body>, so this matches only when the light palette is active and
+   leaves the dark (slate) palette alone. */
+[data-md-color-scheme="default"] {
+  --md-default-bg-color: var(--phy-sky);
+}
+
 /* Component reference -------------------------------------------------- */
 
 /* Grasshopper icons are 24x24. Displayed at exactly 2x with nearest-neighbour
@@ -42,7 +59,7 @@
 .phy-hero {
   position: relative;
   min-height: 260vh;
-  background-color: #aee8ff;
+  background-color: var(--phy-sky);
 }
 
 /* 4.8rem is the pinned header + tabs, so the stage sits directly beneath
@@ -83,7 +100,7 @@ body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
    elements are targeted directly rather than by redefining those variables —
    that would also repaint the search results panel white-on-white. */
 .md-header {
-  background-color: #1700d4;
+  background-color: var(--phy-ink);
   color: #fff;
 }
 
@@ -100,7 +117,7 @@ body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
 .md-header .md-source:hover,
 .md-tabs__link:hover,
 .md-tabs__link--active {
-  color: #aee8ff;
+  color: var(--phy-sky);
 }
 
 /* The search field sits on the blue, so lift it off the header rather than
