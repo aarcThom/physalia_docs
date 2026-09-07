@@ -6,8 +6,8 @@ site_name = "Physalia"
 
 # copyright = "Copyright &copy; 2026 Thomas Gaudin"
 
-# repo_url = "https://github.com/aarcThom/physalia_docs"
-# repo_name = "aarcThom/physalia_docs"
+repo_url = "https://github.com/aarcThom/Physalia"
+repo_name = "aarcThom/Physalia"
 # edit_uri = "edit/main/docs/"
 
 nav = [
@@ -73,7 +73,8 @@ features = [
 
 # logo = "assets/logo.png"
 
-# [project.theme.icon]
+[project.theme.icon]
+repo = "fontawesome/brands/github"
 # logo = "lucide/smile"
 
 # [project.theme.font]
