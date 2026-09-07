@@ -129,13 +129,26 @@
       resize();
       request();
     };
+    /* requestAnimationFrame does not fire in a hidden tab, so a page opened in
+       the background never gets its first paint. Redraw when it becomes
+       visible, and after a back/forward cache restore. */
+    var onShow = function () {
+      if (!document.hidden) {
+        resize();
+        request();
+      }
+    };
 
     if (!reduce) window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onShow);
+    window.addEventListener("pageshow", onShow);
 
     teardown = function () {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onShow);
+      window.removeEventListener("pageshow", onShow);
       if (frame !== null) cancelAnimationFrame(frame);
     };
   }
