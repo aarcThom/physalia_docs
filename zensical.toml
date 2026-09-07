@@ -11,24 +11,27 @@ site_name = "Physalia"
 # edit_uri = "edit/main/docs/"
 
 nav = [
-  { "Get started" = "index.md" },
-  { "Components" = [
-    { "Overview" = "components/index.md" },
-    { "Pipeline" = "components/pipeline.md" },
-    { "Models" = "components/models.md" },
-    { "Signals" = "components/signals.md" },
-    { "Grounding" = "components/grounding.md" },
-    { "LLM Tools" = "components/llm-tools.md" },
-    { "Guardrails" = "components/guardrails.md" },
-    { "Tokens & Compaction" = "components/tokens-compaction.md" },
-    { "Control Flow" = "components/control-flow.md" },
-    { "Triggers" = "components/triggers.md" },
-    { "Human Tools" = "components/human-tools.md" },
-    { "Transmitters" = "components/transmitters.md" },
-    { "I/O" = "components/io.md" },
-    { "Extra" = "components/extra.md" },
+  { "Home" = "index.md" },
+  { "Documentation" = [
+    { "Get started" = "getting-started.md" },
+    { "Components" = [
+      { "Overview" = "components/index.md" },
+      { "Pipeline" = "components/pipeline.md" },
+      { "Models" = "components/models.md" },
+      { "Signals" = "components/signals.md" },
+      { "Grounding" = "components/grounding.md" },
+      { "LLM Tools" = "components/llm-tools.md" },
+      { "Guardrails" = "components/guardrails.md" },
+      { "Tokens & Compaction" = "components/tokens-compaction.md" },
+      { "Control Flow" = "components/control-flow.md" },
+      { "Triggers" = "components/triggers.md" },
+      { "Human Tools" = "components/human-tools.md" },
+      { "Transmitters" = "components/transmitters.md" },
+      { "I/O" = "components/io.md" },
+      { "Extra" = "components/extra.md" },
+    ] },
+    { "Markdown in 5min" = "markdown.md" },
   ] },
-  { "Markdown in 5min" = "markdown.md" },
 ]
 
 extra_css = ["stylesheets/extra.css"]
@@ -36,7 +39,7 @@ extra_css = ["stylesheets/extra.css"]
 
 [project.theme]
 # variant = "classic"
-# custom_dir = "overrides"
+custom_dir = "overrides"
 # favicon = "images/favicon.png"
 language = "en"
 features = [
@@ -59,7 +62,7 @@ features = [
   "navigation.path",
   # "navigation.prune",
   "navigation.sections",
-  # "navigation.tabs",
+  "navigation.tabs",
   # "navigation.tabs.sticky",
   "navigation.top",
   "navigation.tracking",
