@@ -4,13 +4,25 @@
   Splash page. Fills base.html's `hero` block, which sits below the pinned
   header and tabs, so this area scrolls while they stay put.
 
-  Deliberately empty — a flat panel waiting for the dot-particle animation.
+  The hero is deliberately several viewports tall: that height is the scroll
+  runway. Inside it the stage is sticky, so the logo stays pinned in view while
+  the scroll position drives the decomposition.
 -->
 
 {% block hero %}
-  <div class="phy-hero"></div>
+  <div class="phy-hero">
+    <div class="phy-hero__stage">
+      <canvas class="phy-hero__canvas" data-phy-logo aria-label="Physalia" role="img"></canvas>
+    </div>
+  </div>
 {% endblock %}
 
 <!-- A splash page carries no article of its own; `container` is the block
      that wraps the whole content well, so dropping it leaves no empty box. -->
 {% block container %}{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ 'javascripts/logo-dots.js' | url }}"></script>
+  <script src="{{ 'javascripts/splash.js' | url }}"></script>
+{% endblock %}

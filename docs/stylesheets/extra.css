@@ -35,14 +35,29 @@
 
 /* Splash hero ----------------------------------------------------------- */
 
-/* Empty for now — the panel the dot animation will be drawn into. Fills the
-   viewport below the pinned header + tabs (4.8rem together) and scrolls
-   normally beneath them. */
+/* The hero's height IS the scroll runway for the logo decomposition: the
+   stage inside it pins, so the visitor scrolls ~1.6 viewports' worth of
+   animation. No `overflow` here — any value but `visible` would make this a
+   scroll container and stop the sticky stage from sticking. */
 .phy-hero {
   position: relative;
-  overflow: hidden;
-  min-height: calc(100vh - 4.8rem);
+  min-height: 260vh;
   background-color: #aee8ff;
+}
+
+/* 4.8rem is the pinned header + tabs, so the stage sits directly beneath
+   them and fills the rest of the screen. */
+.phy-hero__stage {
+  position: sticky;
+  top: 4.8rem;
+  height: calc(100vh - 4.8rem);
+  overflow: hidden;
+}
+
+.phy-hero__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* home.html drops the content well entirely, so close the gap it leaves
