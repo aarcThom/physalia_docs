@@ -21,6 +21,15 @@
      that wraps the whole content well, so dropping it leaves no empty box. -->
 {% block container %}{% endblock %}
 
+{% block extrahead %}
+  {{ super() }}
+  <!-- The strapline is set in Arial. Arimo is metric-compatible with it, so
+       the line keeps its designed width wherever Arial is not installed. -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Arimo:wght@400&display=swap">
+{% endblock %}
+
 {% block scripts %}
   {{ super() }}
   <script src="{{ 'javascripts/logo-dots.js' | url }}"></script>

@@ -4,7 +4,8 @@
    follows — including the logo dots, which splash.js reads from --phy-ink
    rather than carrying their own copy of the value. */
 :root {
-  --phy-ink: #1700d4; /* header bar, and the logo dots */
+  --phy-ink: #003d9e; /* header bar, and the primary logo dots */
+  --phy-accent: #6ee4ff; /* the lighter blue dots behind the wordmark */
   --phy-sky: #d7fffe; /* splash panel, and the docs background in light mode */
 }
 
