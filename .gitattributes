@@ -1,0 +1,20 @@
+# Line endings
+#
+# Text files are normalised to LF in the repository; working trees keep their
+# platform's native endings. Without this the same checkout disagrees with
+# itself across environments: Windows git here runs core.autocrlf=true and
+# stores LF while checking out CRLF, so a WSL git (which has no autocrlf) reads
+# every text file as wholly modified.
+* text=auto
+
+# Kept explicit: these are text the detector could otherwise guess at.
+*.svg text
+*.toml text
+*.lock text
+
+# Never touched.
+*.jpg binary
+*.png binary
+*.ico binary
+*.woff binary
+*.woff2 binary

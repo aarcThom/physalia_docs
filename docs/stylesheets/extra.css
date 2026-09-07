@@ -6,14 +6,7 @@
 :root {
   --phy-ink: #003d9e; /* header bar, and the primary logo dots */
   --phy-accent: #6ee4ff; /* the lighter blue dots behind the wordmark */
-  --phy-sky: #d7fffe; /* splash panel, and the docs background in light mode */
-}
-
-/* The docs share the splash's background in light mode. The scheme attribute
-   sits on <body>, so this matches only when the light palette is active and
-   leaves the dark (slate) palette alone. */
-[data-md-color-scheme="default"] {
-  --md-default-bg-color: var(--phy-sky);
+  --phy-sky: #d7fffe; /* splash panel, and the header hover tint */
 }
 
 /* Component reference -------------------------------------------------- */
