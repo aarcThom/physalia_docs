@@ -17,7 +17,7 @@
    * animation on paper boils, so avoid raising STATES or FPS much. Smooth,
    * high-rate motion reads as floating instead.
    */
-  var BOIL_PX = 1.6; // how far a dot strays from true, in CSS pixels
+  var BOIL_PX = 0.4; // how far a dot strays from true, in CSS pixels
   var BOIL_FPS = 9; // how often the drawing swaps
   var BOIL_STATES = 3; // how many drawings it cycles through
   var FIT = 0.75; // fraction of the available box the wordmark fills
