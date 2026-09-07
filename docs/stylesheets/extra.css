@@ -35,187 +35,14 @@
 
 /* Splash hero ----------------------------------------------------------- */
 
+/* Empty for now — the panel the dot animation will be drawn into. Fills the
+   viewport below the pinned header + tabs (4.8rem together) and scrolls
+   normally beneath them. */
 .phy-hero {
   position: relative;
   overflow: hidden;
-  padding: 4.5rem 0 3.5rem;
-  /* Fill the viewport below the pinned header + tabs (4.8rem together), so the
-     splash reads as a full screen and the footer sits below the fold. The hero
-     scrolls normally under the fixed bar. */
   min-height: calc(100vh - 4.8rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background:
-    radial-gradient(120% 90% at 50% -10%, #2b1a7a 0%, transparent 60%),
-    linear-gradient(180deg, #0b0430 0%, #150a4a 55%, #1d0f5c 100%);
-  color: #fff;
-  text-align: center;
-}
-
-/* Slow-drifting light behind the creature. */
-.phy-hero__glow {
-  position: absolute;
-  inset: -20% -10%;
-  pointer-events: none;
-  background:
-    radial-gradient(38% 38% at 30% 40%, rgba(164, 222, 248, 0.30) 0%, transparent 70%),
-    radial-gradient(34% 34% at 72% 58%, rgba(229, 199, 223, 0.26) 0%, transparent 70%);
-  animation: phy-drift 22s ease-in-out infinite alternate;
-}
-
-@keyframes phy-drift {
-  from { transform: translate3d(-3%, -2%, 0) scale(1);    }
-  to   { transform: translate3d( 3%,  2%, 0) scale(1.12); }
-}
-
-/* Bubbles. Each span is one bubble; offsets are set per child below. */
-.phy-hero__bubbles {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.phy-hero__bubbles span {
-  position: absolute;
-  bottom: -4rem;
-  width: 10px;
-  height: 10px;
-  border: 1px solid rgba(164, 222, 248, 0.55);
-  border-radius: 50%;
-  opacity: 0;
-  animation: phy-rise linear infinite;
-}
-
-.phy-hero__bubbles span:nth-child(1) { left:  8%; animation-duration: 15s; animation-delay:  0s; }
-.phy-hero__bubbles span:nth-child(2) { left: 21%; animation-duration: 19s; animation-delay:  4s; transform: scale(0.6); }
-.phy-hero__bubbles span:nth-child(3) { left: 35%; animation-duration: 13s; animation-delay:  8s; transform: scale(1.4); }
-.phy-hero__bubbles span:nth-child(4) { left: 61%; animation-duration: 17s; animation-delay:  2s; }
-.phy-hero__bubbles span:nth-child(5) { left: 74%; animation-duration: 21s; animation-delay: 10s; transform: scale(0.8); }
-.phy-hero__bubbles span:nth-child(6) { left: 88%; animation-duration: 16s; animation-delay:  6s; transform: scale(1.2); }
-.phy-hero__bubbles span:nth-child(7) { left: 47%; animation-duration: 23s; animation-delay: 13s; transform: scale(0.5); }
-
-@keyframes phy-rise {
-  0%   { opacity: 0;    transform: translateY(0)      scale(1); }
-  10%  { opacity: 0.75; }
-  90%  { opacity: 0.35; }
-  100% { opacity: 0;    transform: translateY(-115vh) scale(1); }
-}
-
-.phy-hero__inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* The creature ---------------------------------------------------------- */
-
-.phy-hero__critter {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.6rem;
-}
-
-.phy-critter {
-  width: clamp(150px, 22vw, 260px);
-  height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 0 26px rgba(164, 222, 248, 0.55));
-}
-
-.phy-critter__body {
-  fill: #a4def8;
-}
-
-/* Face sits in the creature's own colour so it reads against the body. */
-.phy-critter__eye,
-.phy-critter__mouth {
-  fill: #0e006a;
-}
-
-/* Body drifts as one; the face rides along with it. */
-.phy-critter__float {
-  animation: phy-float 7s ease-in-out infinite;
-  transform-origin: 50% 40%;
-}
-
-@keyframes phy-float {
-  0%, 100% { transform: translateY(0)      rotate(0deg);    }
-  33%      { transform: translateY(-14px)  rotate(-2.2deg); }
-  66%      { transform: translateY(  9px)  rotate( 2.2deg); }
-}
-
-/* Blink. fill-box keeps the origin on each eye rather than the whole SVG,
-   so they squash in place instead of sliding. */
-.phy-critter__eye {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: phy-blink 6.5s ease-in-out infinite;
-}
-
-@keyframes phy-blink {
-  0%, 92%, 100% { transform: scaleY(1);    }
-  95%           { transform: scaleY(0.08); }
-}
-
-/* Wordmark and copy ----------------------------------------------------- */
-
-.phy-hero__wordmark {
-  width: clamp(230px, 38vw, 430px);
-  height: auto;
-  margin: 0 auto 1.3rem;
-  filter: drop-shadow(0 3px 18px rgba(0, 0, 0, 0.45));
-  animation: phy-rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) both 0.15s;
-}
-
-.phy-hero__tagline {
-  max-width: 34rem;
-  margin: 0 auto 0.6rem;
-  color: #fff;
-  font-size: 1.02rem;
-  line-height: 1.6;
-  animation: phy-rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) both 0.3s;
-}
-
-.phy-hero__sub {
-  max-width: 32rem;
-  margin: 0 auto 2rem;
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 0.78rem;
-  animation: phy-rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) both 0.45s;
-}
-
-@keyframes phy-rise-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
-.phy-hero__actions {
-  animation: phy-rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) both 0.6s;
-}
-
-.phy-hero__actions .md-button {
-  margin: 0.3rem 0.35rem;
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.6);
-  transition: transform 0.2s, background-color 0.2s, color 0.2s;
-}
-
-.phy-hero__actions .md-button:hover {
-  transform: translateY(-2px);
-  background-color: #a4def8;
-  color: #0b0430;
-  border-color: #a4def8;
-}
-
-.phy-hero__actions .md-button--primary {
-  background-color: #a4def8;
-  color: #0b0430;
-  border-color: #a4def8;
-}
-
-.phy-hero__actions .md-button--primary:hover {
-  background-color: #e5c7df;
-  border-color: #e5c7df;
+  background-color: #aee8ff;
 }
 
 /* home.html drops the content well entirely, so close the gap it leaves
@@ -224,22 +51,7 @@
   margin-top: 0;
 }
 
-/* Motion is decoration here — none of it carries meaning. */
-@media (prefers-reduced-motion: reduce) {
-  .phy-hero__glow,
-  .phy-hero__bubbles span,
-  .phy-critter__float,
-  .phy-critter__eye,
-  .phy-hero__wordmark,
-  .phy-hero__tagline,
-  .phy-hero__sub,
-  .phy-hero__actions {
-    animation: none;
-  }
-  .phy-hero__bubbles { display: none; }
-}
-
-/* The splash sets its own fixed dark hero, so the light/dark toggle is hidden
+/* The splash sets its own fixed colour, so the light/dark toggle is hidden
    there; documentation pages keep it. Scoped by :has() on the hero rather than
    by forking header.html, which Zensical generates and overwrites.
 
