@@ -238,3 +238,13 @@
   }
   .phy-hero__bubbles { display: none; }
 }
+
+/* The splash sets its own fixed dark hero, so the light/dark toggle is hidden
+   there; documentation pages keep it. Scoped by :has() on the hero rather than
+   by forking header.html, which Zensical generates and overwrites.
+
+   Only the control is hidden — the radio inputs stay in the DOM, so a scheme
+   chosen in the docs still applies when the reader lands back here. */
+body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
+  display: none;
+}
