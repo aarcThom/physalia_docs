@@ -1,0 +1,373 @@
+/* Physalia — Zensical theme
+ * =========================
+ *
+ * Palette derived from Physalia physalis. Loaded through extra_css, which
+ * Zensical emits AFTER the theme's main.css and palette.css, so equal
+ * specificity is enough — every override here is a custom-property
+ * assignment on :root or on a scheme attribute. No element selectors, with
+ * one exception fenced off at the bottom (admonitions), which the current
+ * release gives no variables for.
+ *
+ * Restraint is the brand: most of any page is neutral, and colour only
+ * appears where it carries meaning. Nothing here sets spacing, so the modern
+ * variant's generous rhythm is untouched.
+ *
+ * Verified against the modern variant shipped in this repo's build
+ * (main.5da3a30f, palette.812a03bb). Roles noted per block are what that CSS
+ * actually reads the variable for — see the notes at the end for the four
+ * places where the variable a role would need does not exist.
+ */
+
+/* ---------------------------------------------------------------------------
+ * 1. Brand tokens
+ *
+ * Scheme-independent. The raw six, plus the derived variants each mode needs
+ * to stay legible. Measured contrast is noted so the derivation is auditable.
+ * Everything below refers to these; no colour literal appears twice.
+ * ------------------------------------------------------------------------ */
+
+:root {
+  --phy-deep-water: #060a14; /* near-black, blue-cast */
+  --phy-voltage: #1c4fd8; /* electric ultramarine */
+  --phy-glass: #d3e5de; /* pale iridescent mint */
+  --phy-periwinkle: #8e8ad8; /* lavender-blue */
+  --phy-crest: #e25fa4; /* violet-leaning pink */
+  --phy-nematocyst: #e9dd4f; /* chartreuse */
+
+  /* Darkened for use as text on light surfaces. Raw Crest is 3.3:1 on white
+     and raw Nematocyst 1.4:1 — neither is usable as light-mode type. */
+  --phy-crest-dark: #b02572; /* 6.3:1 on white, 5.9:1 on the alt surface */
+  --phy-nematocyst-dark: #5f5405; /* 7.6:1 on white, 7.2:1 on the alt surface */
+  --phy-voltage-dark: #14399b; /* 10.1:1 on white — code keywords */
+  --phy-periwinkle-dark: #6b66c4; /* 4.9:1 on white, 4.6:1 on the alt surface */
+
+  /* Lightened for dark mode. Raw Voltage is 3.0:1 on Deep water, so it is a
+     fill colour there and never type. */
+  --phy-voltage-light: #6c93f5; /* 6.7:1 on Deep water, 6.1:1 on raised */
+  --phy-periwinkle-light: #a8a4e4; /* 8.6:1 on Deep water */
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Light mode
+ * ------------------------------------------------------------------------ */
+
+[data-md-color-scheme="default"] {
+  /* -- Neutrals for this scheme ------------------------------------------ */
+  --phy-surface-alt: #f5f9f8; /* Glass at ~15% over white */
+  --phy-border: #dde7e3; /* Glass at ~60% */
+  --phy-muted: #5a6470; /* 6.0:1 on white, 5.7:1 on the alt surface */
+  --phy-muted-lighter: #97a0aa; /* derived: blockquote rules, scrollbars, disabled icons */
+
+  /* -- Surfaces ----------------------------------------------------------
+     --light is the chrome surface: header, primary sidebar, mobile drawer,
+     back-to-top, tabbed buttons. Opaque rather than the theme's translucent
+     white, so the sticky header does not show type through its blur. */
+  --md-default-bg-color: #ffffff;
+  --md-default-bg-color--light: var(--phy-surface-alt);
+  --md-default-bg-color--lighter: var(--phy-surface-alt);
+  --md-default-bg-color--lightest: var(--phy-surface-alt);
+
+  /* -- Text and dividers -------------------------------------------------
+     The fg ladder is text at the top and hairlines at the bottom:
+     --light is muted/secondary type, --lightest is every rule, divider,
+     footer border and neutral button face. */
+  --md-default-fg-color: var(--phy-deep-water);
+  --md-default-fg-color--light: var(--phy-muted);
+  --md-default-fg-color--lighter: var(--phy-muted-lighter);
+  --md-default-fg-color--lightest: var(--phy-border);
+  --md-typeset-color: var(--md-default-fg-color);
+
+  /* -- Primary: links, and the primary CTA fill -------------------------- */
+  --md-primary-fg-color: var(--phy-voltage);
+  --md-primary-fg-color--light: var(--phy-voltage-light);
+  --md-primary-fg-color--dark: var(--phy-voltage-dark);
+  --md-primary-bg-color: #ffffff; /* label on the CTA fill — 6.7:1 */
+  --md-primary-bg-color--light: #ffffff;
+
+  /* -- Accent: link hover, active nav, scrollbar thumb, tag hover -------- */
+  --md-accent-fg-color: var(--phy-crest-dark);
+  --md-accent-fg-color--transparent: #b0257214; /* Crest dark at 8% — active nav row */
+  --md-accent-bg-color: #ffffff; /* label on an accent fill — 6.3:1 */
+  --md-accent-bg-color--light: #ffffff;
+
+  /* -- Code surface ------------------------------------------------------ */
+  --md-code-fg-color: var(--phy-deep-water);
+  --md-code-bg-color: var(--phy-surface-alt);
+  --md-code-bg-color--light: var(--phy-surface-alt);
+  --md-code-bg-color--lighter: var(--phy-surface-alt);
+
+  /* -- Syntax ------------------------------------------------------------
+     Operator, punctuation, generic and variable are left deriving from
+     --md-default-fg-color--light, which is the body-muted colour, as the
+     brief asks. Name follows --md-code-fg-color the same way. */
+  --md-code-hl-keyword-color: var(--phy-voltage-dark);
+  --md-code-hl-string-color: var(--phy-crest-dark);
+  --md-code-hl-number-color: var(--phy-nematocyst-dark);
+  --md-code-hl-constant-color: var(--phy-nematocyst-dark);
+  --md-code-hl-function-color: var(--phy-periwinkle-dark);
+  --md-code-hl-special-color: var(--phy-periwinkle-dark);
+  --md-code-hl-comment-color: var(--phy-muted);
+  /* Highlighted line: 10% wash with a Voltage bar down the inside edge. */
+  --md-code-hl-color: var(--phy-voltage);
+  --md-code-hl-color--light: #1c4fd81a;
+
+  /* -- Tables: hairline rules, tinted hover row -------------------------- */
+  --md-typeset-table-color: var(--phy-border);
+  --md-typeset-table-color--light: var(--phy-surface-alt);
+
+  /* -- Marked text: the one place raw Nematocyst carries meaning --------- */
+  --md-typeset-mark-color: #e9dd4f66; /* 40% */
+
+  /* -- Keyboard keys ----------------------------------------------------- */
+  --md-typeset-kbd-color: var(--phy-surface-alt);
+  --md-typeset-kbd-accent-color: #ffffff;
+  --md-typeset-kbd-border-color: var(--phy-border);
+
+  /* -- Warning banner: Deep water on the Nematocyst tint, never white ---- */
+  --md-warning-fg-color: var(--phy-deep-water);
+  --md-warning-bg-color: #f7f3c1; /* Nematocyst at ~35% over white */
+
+  /* -- No gradients, glows or drop shadows: every elevation is a hairline.
+        z1 input, z2 secondary sidebar / select / tooltip, z3 dialog and the
+        mobile drawer. 0.05rem matches the theme's own hairline width. */
+  --md-shadow-z1: 0 0 0 0.05rem var(--phy-border);
+  --md-shadow-z2: 0 0 0 0.05rem var(--phy-border);
+  --md-shadow-z3: 0 0 0 0.05rem var(--phy-border);
+
+  /* -- Search dialog ----------------------------------------------------
+     Zensical's search overlay is styled from its own RGB-triplet namespace,
+     not from --md-*. Space-separated channels, no rgb() wrapper: the theme
+     consumes them as rgb(var(--color-background)) and
+     rgba(var(--color-background)/var(--alpha-light)). Its --color-highlight
+     already derives from --md-accent-fg-color, so it needs nothing here. */
+  --color-foreground: 6 10 20;
+  --color-background: 255 255 255;
+  --color-background-subtle: 245 249 248;
+  --color-backdrop: 255 255 255;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Dark mode
+ * ------------------------------------------------------------------------ */
+
+[data-md-color-scheme="slate"] {
+  /* Slate derives anything not overridden below from this hue, so the
+     leftover greys pick up the blue cast instead of slate's default 225.
+     The unit is deliberate — the theme ships `225deg` in this slot. */
+  --md-hue: 220deg;
+
+  /* -- Neutrals for this scheme ------------------------------------------ */
+  --phy-raised: #101726; /* cards, code blocks, sidebar */
+  --phy-border-dark: #1e2838;
+  --phy-muted-dark: #8e9aa8; /* 6.9:1 on Deep water */
+  --phy-muted-dark-lighter: #5c6675; /* derived: blockquote rules, scrollbars, disabled icons */
+
+  /* -- Surfaces ---------------------------------------------------------- */
+  --md-default-bg-color: var(--phy-deep-water);
+  --md-default-bg-color--light: var(--phy-raised);
+  --md-default-bg-color--lighter: var(--phy-raised);
+  --md-default-bg-color--lightest: var(--phy-raised);
+
+  /* -- Text and dividers ------------------------------------------------- */
+  --md-default-fg-color: var(--phy-glass); /* 15.1:1 on Deep water */
+  --md-default-fg-color--light: var(--phy-muted-dark);
+  --md-default-fg-color--lighter: var(--phy-muted-dark-lighter);
+  --md-default-fg-color--lightest: var(--phy-border-dark);
+  --md-typeset-color: var(--md-default-fg-color);
+
+  /* -- Primary: links, and the primary CTA fill --------------------------
+     One variable serves both roles in this release, so it takes the value
+     the text role needs. See note 3 for the CTA trade-off. */
+  --md-primary-fg-color: var(--phy-voltage-light);
+  --md-primary-fg-color--light: var(--phy-voltage-light);
+  --md-primary-fg-color--dark: var(--phy-voltage);
+  --md-primary-bg-color: var(--phy-deep-water); /* label on the CTA fill — 6.7:1 */
+  --md-primary-bg-color--light: var(--phy-deep-water);
+
+  /* -- Accent: link hover, active nav, scrollbar thumb, tag hover -------- */
+  --md-accent-fg-color: var(--phy-crest); /* 6.0:1 on Deep water */
+  --md-accent-fg-color--transparent: #e25fa41f; /* Crest at 12% — active nav row */
+  --md-accent-bg-color: var(--phy-deep-water); /* label on an accent fill — 6.0:1 */
+  --md-accent-bg-color--light: var(--phy-deep-water);
+
+  /* -- Code surface ------------------------------------------------------ */
+  --md-code-fg-color: var(--phy-glass);
+  --md-code-bg-color: var(--phy-raised);
+  --md-code-bg-color--light: var(--phy-raised);
+  --md-code-bg-color--lighter: var(--phy-raised);
+
+  /* -- Syntax ------------------------------------------------------------ */
+  --md-code-hl-keyword-color: var(--phy-voltage-light);
+  --md-code-hl-string-color: var(--phy-crest);
+  --md-code-hl-number-color: var(--phy-nematocyst);
+  --md-code-hl-constant-color: var(--phy-nematocyst);
+  --md-code-hl-function-color: var(--phy-periwinkle-light);
+  --md-code-hl-special-color: var(--phy-periwinkle-light);
+  /* 3.9:1 on the raised surface. Comments are incidental text, so this sits
+     just under the 4.5:1 body threshold by design; #778392 buys 4.6:1 if you
+     would rather have the margin. */
+  --md-code-hl-comment-color: #6b7684;
+  --md-code-hl-color: var(--phy-voltage-light);
+  --md-code-hl-color--light: #6c93f526;
+
+  /* -- Tables ------------------------------------------------------------ */
+  --md-typeset-table-color: var(--phy-border-dark);
+  --md-typeset-table-color--light: var(--phy-raised);
+
+  /* -- Marked text ------------------------------------------------------- */
+  --md-typeset-mark-color: #e9dd4f40; /* 25% */
+
+  /* -- Keyboard keys ----------------------------------------------------- */
+  --md-typeset-kbd-color: var(--phy-border-dark);
+  --md-typeset-kbd-accent-color: #2a3547;
+  --md-typeset-kbd-border-color: var(--phy-deep-water);
+
+  /* -- Warning banner: the same pair as light mode, so the one Nematocyst
+        surface on the site reads identically and never carries white type. */
+  --md-warning-fg-color: var(--phy-deep-water);
+  --md-warning-bg-color: #f7f3c1;
+
+  /* -- Elevation as hairlines, and the footer surface -------------------- */
+  --md-shadow-z1: 0 0 0 0.05rem var(--phy-border-dark);
+  --md-shadow-z2: 0 0 0 0.05rem var(--phy-border-dark);
+  --md-shadow-z3: 0 0 0 0.05rem var(--phy-border-dark);
+  --md-footer-bg-color: var(--phy-raised);
+  --md-footer-bg-color--dark: var(--phy-deep-water);
+
+  /* -- Search dialog (see the light-mode note) --------------------------- */
+  --color-foreground: 211 229 222;
+  --color-background: 16 23 38;
+  --color-background-subtle: 30 40 56;
+  --color-backdrop: 6 10 20;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Admonitions — THE ONE THEME-INTERNAL DEPENDENCY IN THIS FILE
+ *
+ * This release hard-codes each admonition type's colour as a literal in
+ * main.css (note #448aff, tip #00bfa5, warning #ff9100, ...). There is no
+ * --md-admonition-<type>-color to override: the only admonition variables
+ * are --md-admonition-fg-color, --md-admonition-bg-color and the icon masks.
+ * So the mapping below is the only way to get it, and it is the only thing
+ * here that can break on a Zensical upgrade. Three selectors per type: the
+ * tint, the title icon, and the details chevron. If an upgrade changes them,
+ * delete this section and the rest of the file still stands.
+ *
+ * Values still come from the tokens above — the tints via color-mix, the ink
+ * from a per-scheme token, so a palette change never has to be made twice.
+ *
+ * danger, failure and bug keep Zensical's red on purpose. Engineers read red
+ * as danger; remapping it to Crest would spend that signal. Do not "fix".
+ * ------------------------------------------------------------------------ */
+
+[data-md-color-scheme="default"] {
+  --phy-adm-info-ink: var(--phy-voltage);
+  --phy-adm-tip-ink: var(--phy-periwinkle-dark);
+  --phy-adm-warning-ink: var(--phy-nematocyst-dark); /* raw is 1.4:1 here */
+}
+
+[data-md-color-scheme="slate"] {
+  --phy-adm-info-ink: var(--phy-voltage-light);
+  --phy-adm-tip-ink: var(--phy-periwinkle);
+  --phy-adm-warning-ink: var(--phy-nematocyst);
+}
+
+/* note / info — Voltage */
+.md-typeset .admonition.note,
+.md-typeset details.note,
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  background-color: color-mix(in srgb, var(--phy-voltage) 10%, transparent);
+}
+
+.md-typeset .note > .admonition-title:before,
+.md-typeset .note > summary:before,
+.md-typeset .info > .admonition-title:before,
+.md-typeset .info > summary:before {
+  background-color: var(--phy-adm-info-ink);
+}
+
+.md-typeset .note > .admonition-title:after,
+.md-typeset .note > summary:after,
+.md-typeset .info > .admonition-title:after,
+.md-typeset .info > summary:after {
+  color: var(--phy-adm-info-ink);
+}
+
+/* tip / example — Periwinkle */
+.md-typeset .admonition.tip,
+.md-typeset details.tip,
+.md-typeset .admonition.example,
+.md-typeset details.example {
+  background-color: color-mix(in srgb, var(--phy-periwinkle) 12%, transparent);
+}
+
+.md-typeset .tip > .admonition-title:before,
+.md-typeset .tip > summary:before,
+.md-typeset .example > .admonition-title:before,
+.md-typeset .example > summary:before {
+  background-color: var(--phy-adm-tip-ink);
+}
+
+.md-typeset .tip > .admonition-title:after,
+.md-typeset .tip > summary:after,
+.md-typeset .example > .admonition-title:after,
+.md-typeset .example > summary:after {
+  color: var(--phy-adm-tip-ink);
+}
+
+/* warning — Nematocyst. Title type stays --md-admonition-fg-color, which is
+   Deep water in light mode; the tint is too faint in dark mode to take it,
+   so nothing forces a colour on the text here. */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  background-color: color-mix(in srgb, var(--phy-nematocyst) 14%, transparent);
+}
+
+.md-typeset .warning > .admonition-title:before,
+.md-typeset .warning > summary:before {
+  background-color: var(--phy-adm-warning-ink);
+}
+
+.md-typeset .warning > .admonition-title:after,
+.md-typeset .warning > summary:after {
+  color: var(--phy-adm-warning-ink);
+}
+
+/* ---------------------------------------------------------------------------
+ * NOTES — roles that have no variable in this release
+ *
+ * 1. Header and tabs. In the modern variant .md-header takes
+ *    --md-default-bg-color--light with a backdrop blur, and .md-tabs takes
+ *    --md-default-fg-color; neither reads --md-primary-fg-color. A Voltage
+ *    header is therefore not reachable by variable here — it is painted by
+ *    element selector in extra.css, or you switch to variant = "classic",
+ *    where the header and tabs do use primary fg/bg.
+ * 2. --md-primary-fg-color--light, --md-primary-fg-color--dark,
+ *    --md-primary-bg-color--light, --md-accent-bg-color--light and
+ *    --md-default-bg-color--lightest have no consumer in the modern
+ *    variant's CSS. They are set above so a variant switch stays coherent.
+ * 3. Dark-mode CTA. --md-primary-fg-color is both the link colour and the
+ *    .md-button--primary fill, so the brief's "links #6C93F5" and "CTA fill
+ *    #1C4FD8 with a #D3E5DE label" cannot both hold. Links win, and the
+ *    label is Deep water for 6.7:1 on the lighter fill (Glass on it is
+ *    2.3:1). For a true Voltage CTA, one element selector does it:
+ *      [data-md-color-scheme="slate"] .md-typeset .md-button--primary {
+ *        color: var(--phy-glass);            
+ *        background-color: var(--phy-voltage);
+ *      }
+ * 4. Dark-mode headings. Slate pins h1-h6 and .md-header__title to pure
+ *    white via its own selector, so headings read white rather than Glass.
+ *    Cosmetic, and only fixable with an element selector.
+ * 5. Sidebar, tables and footnotes as an alt surface. The sidebar is
+ *    covered: it takes --md-default-bg-color--light. Tables get the tint on
+ *    the hover row only, and footnotes have no surface variable at all —
+ *    both render on the page background.
+ * 6. Code blocks are the one component that carries Crest and Nematocyst at
+ *    once (strings and numbers). Syntax colour is load-bearing, so this is a
+ *    deliberate exception to the "never both" rule rather than an oversight.
+ * 7. --md-typeset-del-color and --md-typeset-ins-color keep the theme's
+ *    red/green diff tints, for the same reason danger stays red.
+ * 8. Mermaid needs nothing: the theme derives every --md-mermaid-* value
+ *    from the primary, accent, default and code variables set above.
+ * ------------------------------------------------------------------------ */
