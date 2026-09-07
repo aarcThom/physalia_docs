@@ -39,17 +39,23 @@
     var ctx = canvas.getContext("2d");
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Per-dot scatter parameters, in viewBox units. The upward bias reads as
-       the logo lifting apart rather than simply exploding. */
+    /* Per-dot scatter parameters. Direction is a unit vector with an upward
+       bias, so the logo reads as lifting apart rather than simply exploding.
+       `spread` is a multiple of the canvas diagonal, which keeps the travel
+       resolution-independent and guarantees every dot clears the viewport:
+       the shortest throw still exceeds the centre-to-corner distance. */
     var rnd = mulberry32(0x5eed);
     var parts = logo.dots.map(function (d) {
       var ang = rnd() * Math.PI * 2;
+      var dx = Math.cos(ang);
+      var dy = Math.sin(ang) - 0.35;
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
       return {
         x: d[0],
         y: d[1],
-        dx: Math.cos(ang),
-        dy: Math.sin(ang) - 0.35,
-        dist: 260 + rnd() * 900,
+        dx: dx / len,
+        dy: dy / len,
+        spread: 0.6 + rnd() * 0.9,
         delay: rnd() * 0.45
       };
     });
@@ -65,7 +71,9 @@
       canvas.height = Math.round(sh * dpr);
 
       var pad = sw < 700 ? 20 : 64;
-      scale = Math.min((sw - pad * 2) / logo.w, (sh - pad * 2) / logo.h);
+      /* FIT is the fraction of the available box the wordmark occupies. */
+      var FIT = 0.75;
+      scale = Math.min((sw - pad * 2) / logo.w, (sh - pad * 2) / logo.h) * FIT;
       ox = (sw - logo.w * scale) / 2;
       oy = (sh - logo.h * scale) / 2;
     }
@@ -86,6 +94,8 @@
       ctx.fillStyle = logo.fill;
 
       var r0 = logo.r * scale;
+      var diag = Math.sqrt(sw * sw + sh * sh);
+
       for (var i = 0; i < parts.length; i++) {
         var q = parts[i];
 
@@ -93,21 +103,20 @@
            wordmark crumbles progressively instead of leaving all at once. */
         var t = (p - q.delay) / 0.55;
         t = t < 0 ? 0 : t > 1 ? 1 : t;
-        if (t >= 1) continue;
 
-        var e = t * t; // accelerate outward
-        ctx.globalAlpha = 1 - t;
+        var off = diag * q.spread * t * t; // accelerate outward
+        var x = ox + q.x * scale + q.dx * off;
+        var y = oy + q.y * scale + q.dy * off;
+
+        /* Dots keep full opacity and full size — they leave the frame intact
+           rather than dissolving, so they survive to be recalled into the next
+           shape. Anything past the edge is simply not drawn. */
+        if (x < -r0 || x > sw + r0 || y < -r0 || y > sh + r0) continue;
+
         ctx.beginPath();
-        ctx.arc(
-          ox + (q.x + q.dx * q.dist * e) * scale,
-          oy + (q.y + q.dy * q.dist * e) * scale,
-          r0 * (1 - 0.35 * t),
-          0,
-          Math.PI * 2
-        );
+        ctx.arc(x, y, r0, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.globalAlpha = 1;
     }
 
     var frame = null;

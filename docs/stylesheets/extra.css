@@ -75,3 +75,49 @@
 body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
   display: none;
 }
+
+/* Header ---------------------------------------------------------------- */
+
+/* Header and tabs in the logo's blue. The theme colours these from
+   --md-default-* variables, which are shared with the page body, so the
+   elements are targeted directly rather than by redefining those variables —
+   that would also repaint the search results panel white-on-white. */
+.md-header {
+  background-color: #1700d4;
+  color: #fff;
+}
+
+.md-header .md-header__button,
+.md-header .md-header__title,
+.md-header .md-source,
+.md-header .md-ellipsis,
+.md-tabs,
+.md-tabs__link {
+  color: #fff;
+}
+
+.md-header .md-header__button:hover,
+.md-header .md-source:hover,
+.md-tabs__link:hover,
+.md-tabs__link--active {
+  color: #aee8ff;
+}
+
+/* The search field sits on the blue, so lift it off the header rather than
+   leaving it the same colour. */
+.md-header .md-search__form {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.md-header .md-search__form:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.md-header .md-search__input,
+.md-header .md-search__icon {
+  color: #fff;
+}
+
+.md-header .md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
