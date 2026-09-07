@@ -39,6 +39,13 @@
   position: relative;
   overflow: hidden;
   padding: 4.5rem 0 3.5rem;
+  /* Fill the viewport below the pinned header + tabs (4.8rem together), so the
+     splash reads as a full screen and the footer sits below the fold. The hero
+     scrolls normally under the fixed bar. */
+  min-height: calc(100vh - 4.8rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background:
     radial-gradient(120% 90% at 50% -10%, #2b1a7a 0%, transparent 60%),
     linear-gradient(180deg, #0b0430 0%, #150a4a 55%, #1d0f5c 100%);
