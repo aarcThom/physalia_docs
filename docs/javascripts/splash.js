@@ -42,8 +42,9 @@
     /* Per-dot scatter parameters. Direction is a unit vector with an upward
        bias, so the logo reads as lifting apart rather than simply exploding.
        `spread` is a multiple of the canvas diagonal, which keeps the travel
-       resolution-independent and guarantees every dot clears the viewport:
-       the shortest throw still exceeds the centre-to-corner distance. */
+       resolution-independent and guarantees every dot clears the viewport: the
+       longest escape a dot inside the frame can need is one diagonal, so the
+       shortest throw is set just above 1. */
     var rnd = mulberry32(0x5eed);
     var parts = logo.dots.map(function (d) {
       var ang = rnd() * Math.PI * 2;
@@ -55,7 +56,7 @@
         y: d[1],
         dx: dx / len,
         dy: dy / len,
-        spread: 0.6 + rnd() * 0.9,
+        spread: 1.05 + rnd() * 0.85,
         delay: rnd() * 0.45
       };
     });
