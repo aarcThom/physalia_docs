@@ -1,12 +1,34 @@
 /* Brand constants ------------------------------------------------------- */
 
-/* The three colours the site is built from. Change them here and everything
-   follows — including the logo dots, which splash.js reads from --phy-ink
-   rather than carrying their own copy of the value. */
+/* The site's own roles, every one resolved from a physalia.css brand token —
+   no colour literal lives here. splash.js reads the three --phy-logo-* values
+   at paint time rather than carrying its own copy, so the artwork follows the
+   scheme with everything else.
+
+   Values that differ by scheme are overridden in the slate block below. The
+   header keeps Voltage in both: it is a fill, which is the only role raw
+   Voltage may take on a dark ground. */
 :root {
-  --phy-ink: #003d9e; /* header bar, and the primary logo dots */
-  --phy-accent: #6ee4ff; /* the lighter blue dots behind the wordmark */
-  --phy-sky: #d7fffe; /* splash panel, and the header hover tint */
+  --phy-logo-ink: var(--phy-voltage); /* the wordmark and creature dots */
+  --phy-logo-halo: var(--phy-voltage-light); /* the lighter dots behind it */
+  /* The strapline is type and it crosses the halo bar, so it takes the ink
+     rather than the mark: Voltage on Voltage light would be 2.5:1. */
+  --phy-logo-text: var(--phy-deep-water); /* 19.8:1 on the panel, 6.7:1 on the halo */
+  --phy-header-bg: var(--phy-voltage);
+  --phy-header-fg: #ffffff; /* 6.7:1 on Voltage */
+  --phy-header-fg-hover: var(--phy-glass); /* 5.1:1 on Voltage */
+}
+
+[data-md-color-scheme="slate"] {
+  /* The tonal pair swaps: raw Voltage is 3.0:1 on Deep water, so the mark
+     steps up to Voltage light and the halo takes the raw hue. Light mode
+     reads dark mark over light halo, dark mode light mark over dark halo —
+     one hue family either way. */
+  --phy-logo-ink: var(--phy-voltage-light); /* 5.7:1 on the splash panel */
+  --phy-logo-halo: var(--phy-voltage);
+  --phy-logo-text: var(--phy-glass); /* the dark-mode ink: 13.7:1, 5.1:1 on the halo */
+  --phy-header-fg: var(--phy-glass);
+  --phy-header-fg-hover: #ffffff;
 }
 
 /* Component reference -------------------------------------------------- */
@@ -53,7 +75,9 @@
 .phy-hero {
   position: relative;
   min-height: 260vh;
-  background-color: var(--phy-sky);
+  /* The theme's chrome surface — one step off the page in either scheme, so
+     the splash reads as its own field without setting a colour of its own. */
+  background-color: var(--md-default-bg-color--light);
 }
 
 /* 4.8rem is the pinned header + tabs, so the stage sits directly beneath
@@ -88,25 +112,15 @@
   margin-top: 0;
 }
 
-/* The splash sets its own fixed colour, so the light/dark toggle is hidden
-   there; documentation pages keep it. Scoped by :has() on the hero rather than
-   by forking header.html, which Zensical generates and overwrites.
-
-   Only the control is hidden — the radio inputs stay in the DOM, so a scheme
-   chosen in the docs still applies when the reader lands back here. */
-body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
-  display: none;
-}
-
 /* Header ---------------------------------------------------------------- */
 
-/* Header and tabs in the logo's blue. The theme colours these from
+/* Header and tabs in Voltage. The theme colours these from
    --md-default-* variables, which are shared with the page body, so the
    elements are targeted directly rather than by redefining those variables —
    that would also repaint the search results panel white-on-white. */
 .md-header {
-  background-color: var(--phy-ink);
-  color: #fff;
+  background-color: var(--phy-header-bg);
+  color: var(--phy-header-fg);
 }
 
 .md-header .md-header__button,
@@ -115,14 +129,14 @@ body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
 .md-header .md-ellipsis,
 .md-tabs,
 .md-tabs__link {
-  color: #fff;
+  color: var(--phy-header-fg);
 }
 
 .md-header .md-header__button:hover,
 .md-header .md-source:hover,
 .md-tabs__link:hover,
 .md-tabs__link--active {
-  color: var(--phy-sky);
+  color: var(--phy-header-fg-hover);
 }
 
 /* The search field sits on the blue, so lift it off the header rather than
@@ -137,7 +151,7 @@ body:has(.phy-hero) .md-header__option[data-md-component="palette"] {
 
 .md-header .md-search__input,
 .md-header .md-search__icon {
-  color: #fff;
+  color: var(--phy-header-fg);
 }
 
 .md-header .md-search__input::placeholder {

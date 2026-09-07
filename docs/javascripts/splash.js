@@ -117,8 +117,8 @@
 
     /* Accent first, so the light dots sit behind the wordmark. */
     var layers = [
-      { key: "--phy-accent", fallback: logo.accent.fill, parts: build(logo.accent.dots) },
-      { key: "--phy-ink", fallback: logo.primary.fill, parts: build(logo.primary.dots) }
+      { key: "--phy-logo-halo", fallback: logo.accent.fill, parts: build(logo.accent.dots) },
+      { key: "--phy-logo-ink", fallback: logo.primary.fill, parts: build(logo.primary.dots) }
     ];
 
     /* Where each piece lands, in CSS pixels: dot (x, y) in viewBox units maps
@@ -155,13 +155,18 @@
     function resize() {
       /* Colours come from the custom properties so the header and the artwork
          stay in step from one place. The fills baked into logo-dots.js from the
-         source SVG are the fallback if a property is ever missing. */
-      var css = getComputedStyle(document.documentElement);
+         source SVG are the fallback if a property is ever missing.
+
+         Read off the canvas rather than <html>: the theme puts the scheme
+         attribute on <body>, so the per-scheme values are not visible from the
+         root element. Inheritance resolves them here whichever block they were
+         declared in. */
+      var css = getComputedStyle(canvas);
       for (var i = 0; i < layers.length; i++) {
         layers[i].fill =
           css.getPropertyValue(layers[i].key).trim() || layers[i].fallback;
       }
-      textFill = css.getPropertyValue("--phy-ink").trim() || logo.text.fill;
+      textFill = css.getPropertyValue("--phy-logo-text").trim() || logo.text.fill;
 
       var rect = canvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -376,6 +381,21 @@
       if (raf === null && !reduce) redrawOnce();
     };
 
+    /* The palette toggle swaps data-md-color-scheme on <body>, and the artwork
+       takes its colours from whichever scheme is set, so re-read them and
+       repaint. resize() is what reads them, and it is cheap. */
+    var schemeWatch = null;
+    if (window.MutationObserver) {
+      schemeWatch = new MutationObserver(function () {
+        resize();
+        redrawOnce();
+      });
+      schemeWatch.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["data-md-color-scheme"]
+      });
+    }
+
     window.addEventListener("resize", onResize);
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onShow);
@@ -385,6 +405,7 @@
       alive = false;
       stop();
       if (io) io.disconnect();
+      if (schemeWatch) schemeWatch.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onShow);
