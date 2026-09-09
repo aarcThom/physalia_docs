@@ -3,9 +3,8 @@
 /* The site's own roles, every one resolved from a physalia.css flavour token.
    splash.js reads the three --phy-logo-* values at paint time rather than
    carrying its own copy, so the artwork follows the scheme with everything
-   else — which is why the halos below are 8-digit hex rather than
-   color-mix(): a custom property keeps color-mix() unresolved, and canvas
-   fillStyle cannot parse it.
+   else. Keep them plain colours: a custom property leaves color-mix()
+   unresolved, and canvas fillStyle cannot parse it.
 
    This block names Latte tokens directly instead of the --ctp-* aliases.
    Those aliases live on <body> with the scheme attribute; :root is <html>,
@@ -17,27 +16,26 @@
    light bar across a dark page. */
 :root {
   --phy-logo-ink: var(--ctp-latte-blue); /* the wordmark and creature dots — 4.0:1 on the panel */
-  /* Latte yellow at 25% behind the mark, the one place on the site a warm
-     tone covers real area. Faint by design — 1.2:1 on the panel reads as a
-     glow, not a second mark, and the mark still clears it at 3.3:1. */
-  --phy-logo-halo: #df8e1d40;
-  /* The strapline is type and it crosses the halo bar, so it has to hold on
-     both grounds. */
-  --phy-logo-text: var(--ctp-latte-text); /* 6.6:1 on the panel, 5.4:1 on the halo */
+  /* The secondary dots behind the mark, and the one place on the site a
+     second hue covers real area. Latte lavender (#7287fd), fully opaque and
+     the same in both schemes: the dots are artwork, not a wash, so they are
+     a colour in their own right rather than a tint of the panel. That is a
+     deliberate trade against the layering — at full strength they read
+     1.5:1 against the mark in either scheme, and the strapline crossing
+     them reads 2.5:1 in light and 2.2:1 in dark, so the lockup separates by
+     hue and dot size rather than by tone. */
+  --phy-logo-halo: var(--ctp-latte-lavender);
+  --phy-logo-text: var(--ctp-latte-text); /* 6.6:1 on the panel */
   --phy-header-bg: var(--ctp-latte-blue);
   --phy-header-fg: var(--ctp-latte-base); /* 4.3:1 on the fill */
   --phy-header-fg-hover: #ffffff; /* 4.9:1 — the hover state is the brighter one */
 }
 
 [data-md-color-scheme="slate"] {
-  /* The mark steps up to Mocha blue, and the halo steps down: Mocha yellow
-     here would be 13.8:1 against the panel — far louder than the mark it
-     sits behind — and would leave the strapline at 1.8:1 where the line
-     crosses it. Latte yellow at 45% reads 2.3:1, and the strapline 5.2:1.
-     The header is unchanged: same fill, same ink, in both schemes. */
+  /* The mark steps up to Mocha blue and the strapline to Mocha text; the
+     secondary dots and the header are unchanged, same colour in both. */
   --phy-logo-ink: var(--ctp-mocha-blue); /* 8.3:1 on the splash panel */
-  --phy-logo-halo: #df8e1d73; /* behind the mark, not on top */
-  --phy-logo-text: var(--ctp-mocha-text); /* 12.1:1 on the panel, 5.2:1 on the halo */
+  --phy-logo-text: var(--ctp-mocha-text); /* 12.1:1 on the panel */
 }
 
 /* Component reference -------------------------------------------------- */
