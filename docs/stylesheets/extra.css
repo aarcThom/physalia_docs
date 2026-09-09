@@ -11,31 +11,49 @@
    where they are not in scope. The scheme-dependent half is overridden in
    the slate block below.
 
-   The header keeps Latte blue as its fill in both schemes. Mocha's blue is a
-   pale tint meant for type on a dark ground, so as a slab it would read as a
-   light bar across a dark page. */
+   The header keeps Latte blue as its fill in both schemes. Frappé's blue is
+   a pale tint meant for type on a dark ground, so as a slab it would read as
+   a light bar across a dark page. */
 :root {
-  --phy-logo-ink: var(--ctp-latte-blue); /* the wordmark and creature dots — 4.0:1 on the panel */
+  /* The primary dots: the wordmark and the creature's outline. This is the
+     only logo tone that steps by scheme. */
+  --phy-logo-ink: var(--ctp-latte-blue); /* 4.0:1 on the splash panel */
+
   /* The secondary dots behind the mark, and the one place on the site a
-     second hue covers real area. Latte lavender (#7287fd), fully opaque and
+     second hue covers real area. Frappé lavender (#babbf1), fully opaque and
      the same in both schemes: the dots are artwork, not a wash, so they are
-     a colour in their own right rather than a tint of the panel. That is a
-     deliberate trade against the layering — at full strength they read
-     1.5:1 against the mark in either scheme, and the strapline crossing
-     them reads 2.5:1 in light and 2.2:1 in dark, so the lockup separates by
-     hue and dot size rather than by tone. */
-  --phy-logo-halo: var(--ctp-latte-lavender);
-  --phy-logo-text: var(--ctp-latte-text); /* 6.6:1 on the panel */
+     a colour in their own right rather than a tint of the panel. Being one
+     fixed tone across two grounds, they land on opposite sides of the mark —
+     1.5:1 below it on the Latte panel, 7.5:1 above it on the Frappé one — so
+     in dark mode the secondary layer is the brighter of the two. Hue and dot
+     size carry the layering there, not tone. */
+  --phy-logo-halo: var(--ctp-frappe-lavender);
+
   --phy-header-bg: var(--ctp-latte-blue);
   --phy-header-fg: var(--ctp-latte-base); /* 4.3:1 on the fill */
   --phy-header-fg-hover: #ffffff; /* 4.9:1 — the hover state is the brighter one */
 }
 
 [data-md-color-scheme="slate"] {
-  /* The mark steps up to Mocha blue and the strapline to Mocha text; the
-     secondary dots and the header are unchanged, same colour in both. */
-  --phy-logo-ink: var(--ctp-mocha-blue); /* 8.3:1 on the splash panel */
-  --phy-logo-text: var(--ctp-mocha-text); /* 12.1:1 on the panel */
+  /* One line is the whole dark mode of the lockup: the primary dots step to
+     Frappé blue, and the strapline follows them through the rule below. The
+     secondary dots and the header are the same colour in both schemes. */
+  --phy-logo-ink: var(--ctp-frappe-blue); /* 6.0:1 on the splash panel */
+}
+
+/* The strapline is the primary dots rendered as type, so it takes their
+   colour by rule rather than by value.
+
+   This has to sit on the scheme selector, not up in :root with the rest of
+   the logo tokens. A var() is substituted using the cascaded value on the
+   element the declaration lands on, and :root is <html> — where the slate
+   override, which lives on <body>, has not happened yet. Declared there the
+   strapline would freeze at the Latte blue and stay that colour in dark
+   mode. On the scheme selector both properties resolve on the same element,
+   so the rule follows the override. */
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+  --phy-logo-text: var(--phy-logo-ink);
 }
 
 /* Component reference -------------------------------------------------- */
