@@ -1,38 +1,43 @@
 /* Brand constants ------------------------------------------------------- */
 
-/* The site's own roles, every one resolved from a physalia.css brand token —
-   no colour literal lives here. splash.js reads the three --phy-logo-* values
-   at paint time rather than carrying its own copy, so the artwork follows the
-   scheme with everything else.
+/* The site's own roles, every one resolved from a physalia.css flavour token.
+   splash.js reads the three --phy-logo-* values at paint time rather than
+   carrying its own copy, so the artwork follows the scheme with everything
+   else — which is why the halos below are 8-digit hex rather than
+   color-mix(): a custom property keeps color-mix() unresolved, and canvas
+   fillStyle cannot parse it.
 
-   Values that differ by scheme are overridden in the slate block below. The
-   header keeps Voltage in both: it is a fill, which is the only role raw
-   Voltage may take on a dark ground. */
+   This block names Latte tokens directly instead of the --ctp-* aliases.
+   Those aliases live on <body> with the scheme attribute; :root is <html>,
+   where they are not in scope. The scheme-dependent half is overridden in
+   the slate block below.
+
+   The header keeps Latte blue as its fill in both schemes. Mocha's blue is a
+   pale tint meant for type on a dark ground, so as a slab it would read as a
+   light bar across a dark page. */
 :root {
-  --phy-logo-ink: var(--phy-voltage); /* the wordmark and creature dots */
-  /* Nematocyst behind the mark, the one place on the site it covers real
-     area: the creature is what it names, so here the colour is the meaning.
-     Faint by design — 1.4:1 on the panel reads as a glow, not a second mark. */
-  --phy-logo-halo: var(--phy-nematocyst);
-  /* The strapline is type and it crosses the halo bar, so it takes the ink
-     rather than the mark: Voltage on Voltage light would be 2.5:1. */
-  --phy-logo-text: var(--phy-deep-water); /* 19.8:1 on the panel, 6.7:1 on the halo */
-  --phy-header-bg: var(--phy-voltage);
-  --phy-header-fg: #ffffff; /* 6.7:1 on Voltage */
-  --phy-header-fg-hover: var(--phy-glass); /* 5.1:1 on Voltage */
+  --phy-logo-ink: var(--ctp-latte-blue); /* the wordmark and creature dots — 4.0:1 on the panel */
+  /* Latte yellow at 25% behind the mark, the one place on the site a warm
+     tone covers real area. Faint by design — 1.2:1 on the panel reads as a
+     glow, not a second mark, and the mark still clears it at 3.3:1. */
+  --phy-logo-halo: #df8e1d40;
+  /* The strapline is type and it crosses the halo bar, so it has to hold on
+     both grounds. */
+  --phy-logo-text: var(--ctp-latte-text); /* 6.6:1 on the panel, 5.4:1 on the halo */
+  --phy-header-bg: var(--ctp-latte-blue);
+  --phy-header-fg: var(--ctp-latte-base); /* 4.3:1 on the fill */
+  --phy-header-fg-hover: #ffffff; /* 4.9:1 — the hover state is the brighter one */
 }
 
 [data-md-color-scheme="slate"] {
-  /* Both tones step: raw Voltage is 3.0:1 on Deep water, so the mark moves up
-     to Voltage light, and the halo moves down to the darkened Nematocyst.
-     Raw Nematocyst here would be 11.9:1 against the panel — louder than the
-     mark it sits behind — and would leave the strapline at 1.15:1 where the
-     line crosses it. Darkened, that reads 5.7:1. */
-  --phy-logo-ink: var(--phy-voltage-light); /* 5.7:1 on the splash panel */
-  --phy-logo-halo: var(--phy-nematocyst-dark); /* 2.4:1 — behind the mark, not on top */
-  --phy-logo-text: var(--phy-glass); /* the dark-mode ink: 13.7:1, 5.1:1 on the halo */
-  --phy-header-fg: var(--phy-glass);
-  --phy-header-fg-hover: #ffffff;
+  /* The mark steps up to Mocha blue, and the halo steps down: Mocha yellow
+     here would be 13.8:1 against the panel — far louder than the mark it
+     sits behind — and would leave the strapline at 1.8:1 where the line
+     crosses it. Latte yellow at 45% reads 2.3:1, and the strapline 5.2:1.
+     The header is unchanged: same fill, same ink, in both schemes. */
+  --phy-logo-ink: var(--ctp-mocha-blue); /* 8.3:1 on the splash panel */
+  --phy-logo-halo: #df8e1d73; /* behind the mark, not on top */
+  --phy-logo-text: var(--ctp-mocha-text); /* 12.1:1 on the panel, 5.2:1 on the halo */
 }
 
 /* Component reference -------------------------------------------------- */
